@@ -5,30 +5,36 @@ pipeline{
             steps{
             checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/herambh17/website']])
             script{
-            bat 'docker rmi -f herambhkumawat17/website:latest'
-            bat 'docker rm -f herambhkumawat17/website:latest'
+            bat 'docker rmi -f pourush123/html:latest'
+            bat 'docker rm -f pourush123/html:latest'
             }
             }
         }
         stage('Build Docker image'){
             steps{
             script{
-            bat 'docker build -t herambhkumawat17/website .'
+            bat 'docker build -t pourush123/html .'
             }
             }
         }
-        stage('Push image to Kubernets cluster'){
+        stage('Push image to Docker Repository'){
             steps{
             script{
-            bat 'docker login -u "herambhkumawat17" -p "Herkum@17" docker.io'
-            bat 'docker push herambhkumawat17/website:latest'
+            bat 'docker login -u "pourush123" -p "830647@Sh" docker.io'
+            bat 'docker push pourush123/html:latest'
             }
             }
         }
-        stage('Creating new Container'){
+        stage('Starting Minikuber Cluster'){
             steps{
                 script{
-                    bat 'docker run -it -d -P --name=cont_html herambhkumawat17/website'
+                    bat 'minikube start --driver=docker'
+            }
+        }
+        stage('Creating Depoyments in Minikube Cluster'){
+            steps{
+                script{
+                    bat 'echo '
             }
         }
     }
