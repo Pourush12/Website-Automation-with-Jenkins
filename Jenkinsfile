@@ -31,10 +31,25 @@ pipeline{
                     bat 'minikube start --driver=docker'
             }
         }
+        stage('Checking if the deployemt exist'){
+            steps{
+                script{
+                    if (bat 'kubectl get svc html'==true) {
+                        bat 'kubectl delete deploymet html'
+                        bat 'kubectl delete svc html'
+                    }
+            }
+        }
         stage('Creating Depoyments in Minikube Cluster'){
             steps{
                 script{
-                    bat 'echo '
+                    bat 'kubectl create deployment html --image=pourush123/html:latest'
+            }
+        }
+        stage('Exposing the deployment to NodePort'){
+            steps{
+                script{
+                    bat 'kubectl expose deployment html --type=NodePort --port=80'
             }
         }
     }
