@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage('Delete existing docker image and container'){
             steps{
-            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/herambh17/website']])
+            checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Pourush12/Website-Automation-with-Jenkins']])
             script{
             bat 'docker rmi -f pourush123/html:latest'
             bat 'docker rm -f pourush123/html:latest'
