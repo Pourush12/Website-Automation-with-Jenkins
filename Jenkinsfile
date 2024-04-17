@@ -31,13 +31,26 @@ pipeline{
                     bat 'minikube start --driver=docker'
             }
         }
-        stage('Checking if the deployemt exist'){
-            steps{
-                script{
-                    if (bat 'kubectl get svc html'==true) {
-                        bat 'kubectl delete deploymet html'
+        stage('Checking if the deployment exists') {
+            steps {
+                script {
+                    def svcOutput = bat(script: 'kubectl get svc html', returnStdout: true).trim()
+                    def deploymentOutput = bat(script: 'kubectl get deployment html', returnStdout: true).trim()
+
+                    if (svcOutput.isEmpty()) {
+                        echo 'Service "html" does not exist'
+                    } else {
                         bat 'kubectl delete svc html'
+                        echo 'Service "html" deleted'
                     }
+
+                    if (deploymentOutput.isEmpty()) {
+                        echo 'Deployment "html" does not exist'
+                    } else {
+                        bat 'kubectl delete deployment html'
+                        echo 'Deployment "html" deleted'
+                    }
+                }
             }
         }
         stage('Creating Depoyments in Minikube Cluster'){
